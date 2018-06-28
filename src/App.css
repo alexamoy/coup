@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  background-image: url('./images/Grey-Background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 }
 
 .App-logo {

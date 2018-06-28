@@ -1,5 +1,37 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
+
+#background-img {
+  width: 100vw;
+  height: 100vh;
+  opacity: .8;
+  z-index: -1;
+}
+
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.ui.grid.login-container{
+  margin-top: 20vh;
+}
+
+.ui.header.login-text {
+  color: rgb(58, 58, 58);
+}
+
+.login-form {
+  z-index: 1;
+  width: 40vw;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
