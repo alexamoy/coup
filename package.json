@@ -8,6 +8,7 @@
     "firebase-cli": "^1.2.0",
     "fireview": "0.0.8",
     "history": "^4.7.2",
+    "hoek": "^5.0.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
