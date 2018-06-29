@@ -7,9 +7,9 @@ import { Router } from 'react-router-dom';
 import history from './history';
 import { AuthProvider } from 'fireview';
 import * as firebase from 'firebase';
-import config from './firestore/config';
+// import config from './firestore/config';
 
-firebase.initializeApp(config);
+// firebase.initializeApp(config);
 
 ReactDOM.render(
   <AuthProvider auth={firebase.auth()}>

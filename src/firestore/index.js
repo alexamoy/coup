@@ -1,5 +1,5 @@
+import config from './config';
 const firebase = require('firebase');
-const config = require('./config');
 require('firebase/firestore');
 require('firebase/auth');
 

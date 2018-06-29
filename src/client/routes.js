@@ -1,15 +1,26 @@
 import React from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import { Login, Signup } from './components';
+import { Login, Signup, Home } from './components';
 import { withAuth } from 'fireview';
 
 const Routes = props => {
-  const user = props.user;
+  const user = props._user;
   return (
-    <Switch>
-      <Route path='/login' component={Login} />
-      <Route path='/signup' component={Signup} />
-    </Switch>
+    user ?
+      (
+        <Switch>
+          <Route path='/home' component={Home} />
+          <Route exact path='/' component={Home} />
+        </Switch>
+      )
+      :
+      (
+        <Switch>
+          <Route path='/login' component={Login} />
+          <Route path='/signup' component={Signup} />
+          <Route exact path='/' component={Login} />
+        </Switch>
+      )
   );
 };
 
