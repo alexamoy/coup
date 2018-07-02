@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import { Login, Signup, Home } from './components';
+import { Login, Signup, Home, GameRoom } from './components';
 import { withAuth } from 'fireview';
 
 const Routes = props => {
@@ -9,6 +9,7 @@ const Routes = props => {
     user ?
       (
         <Switch>
+          <Route path='/room/:id' component={GameRoom} />
           <Route path='/home' component={Home} />
           <Route exact path='/' component={Home} />
         </Switch>

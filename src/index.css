@@ -14,6 +14,10 @@ h1 {
   z-index: -1;
 }
 
+#logo {
+  height: 10vh;
+  width: auto;
+}
 
 .login-container {
   display: flex;
@@ -38,3 +42,68 @@ h1 {
   margin-right: auto;
 }
 
+.navbar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.profile-img {
+  width: 4em;
+  height: 4em;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10vh;
+}
+
+.profile-column {
+  background-color: rgb(58, 58, 58, .8);
+  height: 60vh;
+  margin-left: 30vw;
+  margin-right: 30vw;
+  margin-top: 8vh;
+}
+.profile-column h1 {
+  color: rgb(193, 191, 191);
+  background-color: rgb(58, 58, 58);
+  font-weight: 300;
+  justify-content: center;
+}
+
+#pro-img-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(58, 58, 58);
+  padding: 0;
+}
+#pro-img-name h1 {
+  margin: 0;
+}
+.profile-img-home {
+  width: 13em;
+  height: 13em;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1em;
+}
+
+.stats-boxes {
+  width: 20vw;
+  height: 22vh;
+}
+
+.start-button {
+  margin: 1em;
+}

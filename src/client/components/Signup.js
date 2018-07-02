@@ -29,7 +29,10 @@ export default class Signup extends Component {
       db.collection('users').doc(`${newUser.user.uid}`).set({
         email: email,
         username: username,
-        profileImg: this.state.profileImg
+        profileImg: this.state.profileImg,
+        wins: 0,
+        forfeits: 0,
+        totalGames: 0
       })
       return history.push('/home');
     } catch (err) {

@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Image } from 'semantic-ui-react';
 import Routes from './client/routes';
-import logo from './images/coup-logo.png';
+import { Navbar } from './client/components';
+import { withAuth } from 'fireview';
 
 class App extends Component {
+  state = {
+    userId: ''
+  }
+  async componentDidMount() {
+    const auth = await this.props._auth;
+    const user = await auth.currentUser;
+    if (user) {
+      const userId = await user.uid;
+      this.setState({ userId });
+    }
+  }
   render() {
     return (
       <div className="App">
-        <Image src={ logo }/>
-        <Routes/>
+        <Navbar userId={ this.state.userId } />
+        <Routes />
       </div>
     );
   }
 }
 
-export default App;
+export default withAuth(App);
