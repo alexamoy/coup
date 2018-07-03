@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withAuth } from 'fireview';
 import db from '../../firestore';
 import { Segment, Loader, Button } from 'semantic-ui-react';
+import Game from './Game';
 
 class GameRoom extends Component {
   constructor(props) {
@@ -29,7 +30,6 @@ class GameRoom extends Component {
       const wins = await user.data().wins;
       const roomId = this.props.match.params.id;
       await db.collection('rooms').doc(roomId).onSnapshot(room => {
-        console.log('room', room.data());
         const deck = room.data().deck;
         const players = room.data().players;
         const hostId = room.data().creator;
@@ -63,7 +63,7 @@ class GameRoom extends Component {
       await db.collection('rooms').doc(this.state.roomId).update({
         players: newPlayersArr
       });
-      this.setState({inRoom: true});
+      this.setState({ inRoom: true });
     } catch (err) {
       console.error(err);
     }
@@ -86,25 +86,28 @@ class GameRoom extends Component {
   }
   render() {
     return (
-      <div id='game-container'>
-        <div id='game-info'>
-          <h2>Host: {this.state.host}</h2>
-          <h1>Room: {this.state.roomId}</h1>
+      <div id='room-container'>
+        <div id='game-container'>
+          <div id='game-info'>
+            <h2>Host: {this.state.host}</h2>
+            <h1>Room: {this.state.roomId}</h1>
+            {
+              this.state.inRoom ?
+                <Button className='leave-join' onClick={this.leaveRoom}>Leave Room</Button>
+                :
+                <Button className='leave-join' onClick={this.joinRoom}>Join Room!</Button>
+            }
+          </div>
+          <h2>Players: {this.state.players.length}</h2>
           {
-            this.state.inRoom ?
-              <Button className='leave-join' onClick={this.leaveRoom}>Leave Room</Button>
-              :
-              <Button className='leave-join' onClick={this.joinRoom}>Join Room!</Button>
+            this.state.players.length < 2 &&
+            <Segment>
+              <h2 className='loading-message'>Waiting for more players...</h2>
+              <Loader active />
+            </Segment>
           }
         </div>
-        <h2>Players: {this.state.players.length}</h2>
-        {
-          this.state.players.length < 2 &&
-          <Segment>
-            <h2 className='loading-message'>Waiting for more players...</h2>
-            <Loader active />
-          </Segment>
-        }
+        <Game state={this.state} />
       </div>
     );
   }

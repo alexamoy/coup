@@ -142,3 +142,25 @@ h1 {
   top: 18%;
   transform: translate(-50%, -50%);
 }
+
+#room-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#game-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+
+.player-cards {
+  width: 25vw;
+  height: 25vh;
+}
+
+#grid-container {
+  margin-top: 3em;
+}
