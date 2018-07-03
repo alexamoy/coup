@@ -5,6 +5,8 @@ import logo from '../../images/coup.png';
 import firebase from 'firebase';
 import history from '../../history';
 import db from '../../firestore';
+import tempImg from '../../images/coin.png';
+import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   state = {
@@ -12,12 +14,12 @@ class Navbar extends Component {
   }
   componentDidMount() {
     this.props.userId &&
-    db.collection('users').doc(this.props.userId).get()
-      .then(user => {
-        let profileImg = user.data().profileImg;
-        this.setState({ profileImg });
-      })
-      .catch(err => { console.error(err) })
+      db.collection('users').doc(this.props.userId).get()
+        .then(user => {
+          let profileImg = user.data().profileImg;
+          this.setState({ profileImg });
+        })
+        .catch(err => { console.error(err) })
   }
   handleLogout = () => {
     firebase.auth().signOut()
@@ -26,10 +28,12 @@ class Navbar extends Component {
   render() {
     return (
       <div className='navbar-container'>
-        <Image src={logo} id='logo'/>
+        <Link to='/'>
+          <Image src={logo} id='logo' />
+        </Link>
         {
           <Popup
-            trigger={<Image src={this.state.profileImg} className='profile-img' />}
+            trigger={<Image src={tempImg} className='profile-img' />}
             content={<Button onClick={this.handleLogout} style={{ borderRadius: 0 }}>Sign out</Button>}
             style={{ opacity: .7, borderRadius: 0 }}
             on='click'

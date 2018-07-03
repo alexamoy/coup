@@ -9,7 +9,7 @@ export default class Signup extends Component {
     username: '',
     email: '',
     password: '',
-    profileImg: 'http://tinypic.com/r/2zzng9d/9',
+    profileImg: 'https://image.ibb.co/dspWhJ/coin.png',
     error: false
   }
   handleChange = event => {

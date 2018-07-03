@@ -107,3 +107,38 @@ h1 {
 .start-button {
   margin: 1em;
 }
+
+#game-container h1 {
+  font-size: 3em;
+}
+
+#game-container h2 {
+  margin-top: 0;
+}
+
+.loading-message {
+  margin-bottom: 7vh;
+}
+
+#game-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 32vw;
+  margin-left: 5vw;
+  justify-content: space-between;
+}
+
+#game-info h2 {
+  color: rgb(58, 58, 58);
+  margin-bottom: 0;
+}
+#game-info h1 {
+  align-self: center;
+}
+.leave-join {
+  position: fixed;
+  right: 0%;
+  top: 18%;
+  transform: translate(-50%, -50%);
+}

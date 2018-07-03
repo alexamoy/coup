@@ -5,13 +5,26 @@ import db from '../../firestore';
 import court from './deck';
 import history from '../../history';
 
+let shuffleCourt = (deck) => {
+  for (let i = deck.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = deck[i];
+    deck[i] = deck[j];
+    deck[j] = temp;
+  }
+}
+
 class Home extends Component {
-  state = {
-    username: '',
-    profileImg: '',
-    wins: 0,
-    totalGames: 0,
-    userId: ''
+  constructor() {
+    super();
+    this.state = {
+      username: '',
+      profileImg: '',
+      wins: 0,
+      totalGames: 0,
+      userId: ''
+    };
+    this.createRoom = this.createRoom.bind(this);
   }
   async componentDidMount() {
     try {
@@ -26,23 +39,15 @@ class Home extends Component {
       console.error(err);
     }
   }
-  shuffleCourt(deck) {
-    for (let i = deck.length - 1; i > 0; i--){
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = deck[i];
-      deck[i] = deck[j];
-      deck[j] = temp;
-    }
-  }
   async createRoom() {
     try {
-      this.shuffleCourt(court);
+      shuffleCourt(court);
       const room = await db.collection('rooms').add({
         creator: this.state.userId,
         players: [this.state],
         deck: court,
         activeCharacters: 2
-      })
+      });
       history.push(`/room/${room.id}`);
     } catch(err) {
       console.error(err);
@@ -72,9 +77,9 @@ class Home extends Component {
                 </Segment>
               </Grid.Column>
             </Grid.Row>
-            <Button className='start-button'>Start New Game</Button>
+            <Button className='start-button' onClick={this.createRoom}>Start New Game</Button>
           </Grid.Column>
-          </Grid>
+        </Grid>
       </div>
     );
   }
