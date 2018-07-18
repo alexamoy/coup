@@ -33,6 +33,7 @@ class Game extends Component {
                         ))
                       }
                     </div>
+                    <h3>Inventory: {player.inventory}</h3>
                   </Segment>
                 );
               }
@@ -54,6 +55,7 @@ class Game extends Component {
                         ))
                       }
                     </div>
+                    <h3>Inventory: {player.inventory}</h3>
                   </Segment>
                 </Grid.Row>
               );
