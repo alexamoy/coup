@@ -3,6 +3,16 @@ import { withAuth } from 'fireview';
 import db from '../../firestore';
 import { Segment, Loader, Button } from 'semantic-ui-react';
 import Game from './Game';
+import history from '../../history';
+
+let shuffleCourt = (deck) => {
+  for (let i = deck.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = deck[i];
+    deck[i] = deck[j];
+    deck[j] = temp;
+  }
+};
 
 class GameRoom extends Component {
   constructor(props) {
@@ -15,10 +25,15 @@ class GameRoom extends Component {
       userId: '',
       profileImg: '',
       inRoom: false,
-      host: ''
+      host: '',
+      inProgress: false,
+      influence: [],
+      turn: null,
+      gameId: null,
     };
     this.joinRoom = this.joinRoom.bind(this);
     this.leaveRoom = this.leaveRoom.bind(this);
+    this.startGame = this.startGame.bind(this);
   }
   async componentDidMount() {
     try {
@@ -30,6 +45,9 @@ class GameRoom extends Component {
       const wins = await user.data().wins;
       const roomId = this.props.match.params.id;
       await db.collection('rooms').doc(roomId).onSnapshot(room => {
+        if (!room.data()) {
+          history.push('/home');
+        }
         const deck = room.data().deck;
         const players = room.data().players;
         const hostId = room.data().creator;
@@ -44,6 +62,23 @@ class GameRoom extends Component {
         });
         this.setState({ roomId, deck, players, username, userId, profileImg, totalGames, wins });
       });
+      await db.collection('rooms').doc(roomId).collection('games').onSnapshot(snapshot => {
+        snapshot.forEach(doc => {
+          if (doc.data().inProgress) {
+            const playerInfo = doc.data().players.filter(player => {
+              if(player.userId === this.state.userId) return player;
+            });
+            this.setState({
+              influence: playerInfo[0].influence,
+              inventory: playerInfo[0].inventory,
+              court: doc.data().court,
+              inProgress: doc.data().inProgress,
+              players: doc.data().players
+            });
+          }
+        });
+      });
+
     } catch (err) {
       console.error(err);
     }
@@ -84,7 +119,38 @@ class GameRoom extends Component {
       console.error(err);
     }
   }
+
+  async startGame() {
+    try {
+      let playerCharacters = this.state.players.slice();
+      shuffleCourt(this.state.deck);
+      playerCharacters.forEach(player => {
+        player.influence = [this.state.deck.shift(), this.state.deck.shift()];
+        player.influence[0].active = true;
+        player.influence[1].active = true;
+        player.inventory = 0;
+      });
+      playerCharacters.forEach(player => {
+        if (player.username === this.state.username) {
+          this.setState({ influence: player.influence });
+        }
+      });
+      await this.setState({ inProgress: true });
+      const turn = playerCharacters[Math.floor(Math.random() * Math.floor(playerCharacters.length - 1))].username;
+      const game = await db.collection('rooms').doc(this.state.roomId).collection('games').add({
+        court: this.state.deck,
+        players: playerCharacters,
+        inProgress: this.state.inProgress,
+        turn: turn
+      });
+      await this.setState({ gameId: game.id });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   render() {
+    console.log('state: ', this.state)
     return (
       <div id='room-container'>
         <div id='game-container'>
@@ -107,7 +173,19 @@ class GameRoom extends Component {
             </Segment>
           }
         </div>
-        <Game state={this.state} />
+        {
+          this.state.players.length > 0 &&
+          <Game game={this.state} />
+        }
+        {
+          this.state.players.length >= 2 && this.state.username === this.state.host &&
+          <div id='game-grid'>
+            {
+              !this.state.inProgress &&
+              <Button onClick={this.startGame}>Start Game!</Button>
+            }
+          </div>
+        }
       </div>
     );
   }

@@ -5,15 +5,6 @@ import db from '../../firestore';
 import court from './deck';
 import history from '../../history';
 
-let shuffleCourt = (deck) => {
-  for (let i = deck.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    let temp = deck[i];
-    deck[i] = deck[j];
-    deck[j] = temp;
-  }
-}
-
 class Home extends Component {
   constructor() {
     super();
@@ -41,7 +32,6 @@ class Home extends Component {
   }
   async createRoom() {
     try {
-      shuffleCourt(court);
       const room = await db.collection('rooms').add({
         creator: this.state.userId,
         players: [this.state],
@@ -49,7 +39,7 @@ class Home extends Component {
         activeCharacters: 2
       });
       history.push(`/room/${room.id}`);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
   }
